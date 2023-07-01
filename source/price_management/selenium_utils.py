@@ -6,7 +6,8 @@ from selenium import webdriver
 class SeleniumUtils(BaseUtils):
 
     def __init__(self):
-        self.driver = webdriver.Remote(command_executor=settings.SELENIUM_HOST + '/wd/hub')
+        options = webdriver.ChromeOptions()
+        self.driver = webdriver.Remote(command_executor=settings.SELENIUM_HOST + '/wd/hub', options=options)
 
     async def make_screenshot(self, url, path_name: str):
         self.driver.get(url=url)
