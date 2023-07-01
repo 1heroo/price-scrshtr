@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from sqladmin import Admin
+from starlette.requests import Request
 from starlette.staticfiles import StaticFiles
 
 from source.core.routes import router as main_router
@@ -19,7 +20,17 @@ app.include_router(router=main_router)
 async def test():
     utils = SeleniumUtils()
     url = 'https://www.wildberries.ru/catalog/154257090/detail.aspx?targetUrl=SG'
+    url = 'http://localhost:8000/test/test'
     await utils.make_screenshot(url=url, path_name='static/screenshots/ss.png')
+
+
+@app.get('/test/test')
+async def test_test(request: Request):
+    print(request.headers)
+
+    print('\n\n\n\n')
+
+    print(request.cookies)
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
