@@ -1,3 +1,5 @@
+import time
+
 from source.core.settings import settings
 from source.core.utils import BaseUtils
 from selenium import webdriver
@@ -11,4 +13,7 @@ class SeleniumUtils(BaseUtils):
 
     async def make_screenshot(self, url, path_name: str):
         self.driver.get(url=url)
+        time.sleep(3)
+
         self.driver.save_screenshot(path_name)
+        print(path_name)

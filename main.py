@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from sqladmin import Admin
+from starlette.staticfiles import StaticFiles
 
 from source.core.routes import router as main_router
 import uvicorn
@@ -18,7 +19,10 @@ app.include_router(router=main_router)
 async def test():
     utils = SeleniumUtils()
     url = 'https://www.wildberries.ru/catalog/154257090/detail.aspx?targetUrl=SG'
-    await utils.make_screenshot(url=url, path_name='ss.png')
+    await utils.make_screenshot(url=url, path_name='static/screenshots/ss.png')
+
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 admin = Admin(app=app, engine=async_engine)
