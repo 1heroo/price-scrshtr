@@ -20,7 +20,7 @@ app.include_router(router=main_router)
 async def test():
     utils = SeleniumUtils()
     url = 'https://www.wildberries.ru/catalog/154257090/detail.aspx?targetUrl=SG'
-    url = 'http://localhost:8000/test/test'
+    url = 'http://web:8000/test/test'
     await utils.make_screenshot(url=url, path_name='static/screenshots/ss.png')
 
 
