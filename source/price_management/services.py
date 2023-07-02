@@ -74,7 +74,6 @@ class PriceManagementServices:
             product_basicSale = product.get('extended', {}).get('basicSale')
 
             if product_salePriceU < saved_product.rrc:
-                print(1)
                 awaiting_block_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
                 awaiting_block_time_str = awaiting_block_time.strftime(self.date_time_format_str)
 
@@ -95,7 +94,7 @@ class PriceManagementServices:
             products_to_be_saved.append(saved_product)
 
         await self.product_queries.save_in_db(instances=products_to_be_saved, many=True)
-        # self.pm_utils.set_awaiting_articles(awaiting_articles=new_awaiting_articles, settled_awaiting_articles=awaiting_articles)
+        self.pm_utils.set_awaiting_articles(awaiting_articles=new_awaiting_articles, settled_awaiting_articles=awaiting_articles)
         self.pm_utils.set_blocked_articles(settled_blocked_articles=blocked_articles, blocked_articles=new_blocked_articles)
 
     async def track_awaiting_articles(self):
