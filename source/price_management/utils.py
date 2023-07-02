@@ -25,7 +25,7 @@ class PriceManagementUtils(BaseUtils):
             rrc=saved_product.rrc,
             company_price=product_dict.get('salePriceU', 0) // 100,
             date=datetime.date.today(),
-            time=datetime.datetime.now().strftime('%H:%M:%S'),
+            time=datetime.datetime.now().strftime('%H:%M'),
             screen_link=self.make_screenshot_link()
         )
 

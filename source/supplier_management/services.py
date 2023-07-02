@@ -64,7 +64,7 @@ class SupplierServices:
                 'Цена компании': report.company_price,
                 'Отклонение': price_diff,
                 'Отклонение %': round(price_diff / (report.rrc / 100), 1),
-                'Дата': report.date.strftime('%m/%d/%Y'),
+                'Дата': report.date.strftime('%d/%m/%Y'),
                 'Время нарушения': report.time,
                 'Ссылка на скрин через 15 минут':  f'{settings.PROJECT_HOST}{report.screen_link}',
             })
