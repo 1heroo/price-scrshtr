@@ -27,3 +27,9 @@ async def import_products(file: bytes = File()):
         seller_id_column=seller_id_column, vendor_code_column=vendor_code_column)
 
     return Response(status_code=status.HTTP_200_OK)
+
+
+@router.get('/get-price-violations')
+async def get_price_violations():
+    sequence = await supplier_services.get_price_violations()
+    return supplier_services.xlsx_utils.streaming_response(sequence=sequence, file_name='report')

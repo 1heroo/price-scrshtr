@@ -1,7 +1,8 @@
 import pandas as pd
 
+from source.core.xlsx_utils import XlsxUtils
 from source.supplier_management.models import Supplier
-from source.supplier_management.queries import ProductQueries, SupplierQueries
+from source.supplier_management.queries import ProductQueries, SupplierQueries, ReportQueries
 from source.supplier_management.utils import ParsingUtils, SupplierUtils
 
 
@@ -11,8 +12,12 @@ class SupplierServices:
         self.supplier_utils = SupplierUtils()
         self.parsing_utils = ParsingUtils()
 
+        self.xlsx_utils = XlsxUtils()
+
         self.supplier_queries = SupplierQueries()
         self.product_queries = ProductQueries()
+        self.report_queries = ReportQueries()
+
 
     async def import_products(
             self, df: pd.DataFrame, nm_id_column: str, rrc_column: str, seller_id_column: str, vendor_code_column: str):
@@ -40,6 +45,11 @@ class SupplierServices:
                 supplier_id=seller.id, vendor_code_column=vendor_code_column)
             await self.product_queries.save_or_update_for_supplier(products=products_to_be_saved, supplier_id=seller.id)
 
-
+    async def get_price_violations(self):
+        reports = await self.report_queries.fetch_all()
+        return [
+            report.to_dict()
+            for report in reports
+        ]
 
 

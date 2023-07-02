@@ -69,7 +69,7 @@ class Report(Base):
             'supplier_name': self.supplier_name,
             'product_link': self.product_link,
             'brand': self.brand,
-            'city': self.city,
+            'city': 'Москва',
             'rrc': self.rrc,
             'company_price': self.company_price,
             'date': self.date.strftime('%m/%d/%Y'),
