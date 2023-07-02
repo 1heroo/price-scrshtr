@@ -33,6 +33,8 @@ class PriceManagementServices:
         blocked_articles = self.pm_utils.get_blocked_articles()
         blocked_articles = self.pm_utils.unblock_time_expired_articles(
             blocked_articles=blocked_articles, cached_time_format=self.date_time_format_str)
+        print(awaiting_articles)
+        print(blocked_articles)
 
         saved_products = await self.product_queries.fetch_all()
 
@@ -72,6 +74,7 @@ class PriceManagementServices:
             product_basicSale = product.get('extended', {}).get('basicSale')
 
             if product_salePriceU < saved_product.rrc:
+                print(1)
                 awaiting_block_time = datetime.datetime.now() + datetime.timedelta(minutes=15)
                 awaiting_block_time_str = awaiting_block_time.strftime(self.date_time_format_str)
 
