@@ -1,6 +1,7 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship
 
+from source.core.settings import settings
 from source.db.db import Base
 
 
@@ -74,7 +75,7 @@ class Report(Base):
             'company_price': self.company_price,
             'date': self.date.strftime('%m/%d/%Y'),
             'time': self.time,
-            'screen_link': self.screen_link,
+            'screen_link': f'{settings.PROJECT_HOST}{self.screen_link}',
         }
 
     def __str__(self):

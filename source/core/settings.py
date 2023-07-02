@@ -15,5 +15,7 @@ class Settings:
     WILDAUTHNEW_V3 = config('WILDAUTHNEW_V3')
     REDIS_URL = config('REDIS_URL')
 
+    PROJECT_HOST = config('PROJECT_HOST')
+
 
 settings = Settings()
