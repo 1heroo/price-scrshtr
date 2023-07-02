@@ -42,6 +42,18 @@ services:
       - "4443:4443"
       - "4444:4444"
 
+  redis:
+    image: redis/redis-stack-server
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --bind 0.0.0.0
+    volumes:
+      - redis:/data
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
 volumes:
   postgres_data:
 

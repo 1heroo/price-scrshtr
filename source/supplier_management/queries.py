@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from source.db.db import async_session
 
 from source.db.queries import BaseQueries
-from source.supplier_management.models import Supplier, Product
+from source.supplier_management.models import Supplier, Product, Report
 
 
 class SupplierQueries(BaseQueries):
@@ -38,6 +38,14 @@ class ProductQueries(BaseQueries):
             result = await session.execute(
                 sa.select(self.model)
                 .where(self.model.supplier_id == supplier_id)
+            )
+            return result.scalars().all()
+
+    async def get_products_by_nm_ids(self, nm_ids: list[int]) -> list[Product]:
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model)
+                .where(self.model.nm_id.in_(nm_ids))
             )
             return result.scalars().all()
 
@@ -76,3 +84,12 @@ class ProductQueries(BaseQueries):
         await self.save_in_db(instances=products_to_be_saved, many=True)
 
 
+class ReportQueries(BaseQueries):
+    model = Report
+
+    async def fetch_all(self) -> list[Report]:
+        async with async_session() as session:
+            result = await session.execute(
+                sa.select(self.model)
+            )
+            return result.scalars().all()

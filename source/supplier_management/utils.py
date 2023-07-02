@@ -10,11 +10,13 @@ from source.supplier_management.models import Product
 class SupplierUtils(BaseUtils):
 
     @staticmethod
-    def prepare_products_for_saving(products: list[dict], nm_id_column: str, rrc_column: str, supplier_id: int):
+    def prepare_products_for_saving(
+            products: list[dict], nm_id_column: str, rrc_column: str, supplier_id: int, vendor_code_column: str):
         return [
             Product(
                 nm_id=product.get(nm_id_column),
                 rrc=product.get(rrc_column),
+                vendor_code=product.get(vendor_code_column),
                 supplier_id=supplier_id
             )
             for product in products
@@ -33,6 +35,7 @@ class ParsingUtils(BaseUtils):
         return []
 
     async def get_detail_by_nm_ids(self, nm_ids: list[int]):
+        nm_ids = list(map(str, nm_ids))
         output_data = []
 
         async with aiohttp.ClientSession() as session:
