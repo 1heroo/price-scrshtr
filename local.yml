@@ -56,4 +56,6 @@ services:
 
 volumes:
   postgres_data:
+  redis:
+    driver: local
 
