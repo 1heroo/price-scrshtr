@@ -1,5 +1,6 @@
 import pandas as pd
 
+from source.core.settings import settings
 from source.core.xlsx_utils import XlsxUtils
 from source.supplier_management.models import Supplier
 from source.supplier_management.queries import ProductQueries, SupplierQueries, ReportQueries
@@ -17,7 +18,6 @@ class SupplierServices:
         self.supplier_queries = SupplierQueries()
         self.product_queries = ProductQueries()
         self.report_queries = ReportQueries()
-
 
     async def import_products(
             self, df: pd.DataFrame, nm_id_column: str, rrc_column: str, seller_id_column: str, vendor_code_column: str):
@@ -47,9 +47,28 @@ class SupplierServices:
 
     async def get_price_violations(self):
         reports = await self.report_queries.fetch_all()
-        return [
-            report.to_dict()
-            for report in reports
-        ]
+
+        output_data = []
+        for report in reports:
+            price_diff = report.rrc - report.company_price
+
+            output_data.append({
+                'Маркетплейс': 'Wildberries-login',
+                'Наименование': report.product_title,
+                'PNC': report.pnc,
+                'Компание': report.supplier_name,
+                'Ссылка на товар': report.product_link,
+                'Бренд': report.brand,
+                'Город нарушения': 'Москва',
+                'Цена Ресанта МРЦ': report.rrc,
+                'Цена компании': report.company_price,
+                'Отклонение': price_diff,
+                'Отклонение %': round(price_diff / (report.rrc / 100), 1),
+                'Дата': report.date.strftime('%m/%d/%Y'),
+                'Время нарушения': report.time,
+                'Ссылка на скрин через 15 минут':  f'{settings.PROJECT_HOST}{report.screen_link}',
+            })
+        return output_data
+
 
 
