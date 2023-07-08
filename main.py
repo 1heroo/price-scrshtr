@@ -7,6 +7,7 @@ from source.core.routes import router as main_router
 import uvicorn
 
 from source.db.db import async_engine
+from source.price_management.selenium_utils import SeleniumUtils
 from source.redis_cache.redis_client import redis_client
 # from source.price_management.selenium_utils import SeleniumUtils
 from source.supplier_management.admin import ProductAdmin, SupplierAdmin, ReportAdmin
@@ -17,6 +18,13 @@ app.include_router(router=main_router)
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.get('/test')
+async def test():
+    utils = SeleniumUtils()
+    url = [('https://www.wildberries.ru/catalog/153211620/detail.aspx', 's.png')]
+    await utils.make_screenshot(url_path_names=url)
+    await utils.compress_images(url_path_names=url)
 
 
 admin = Admin(app=app, engine=async_engine)
