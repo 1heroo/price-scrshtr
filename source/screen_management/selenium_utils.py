@@ -29,20 +29,20 @@ class SeleniumUtils(BaseUtils):
     async def make_screenshot(self, url_path_names: str):
         driver = self.init_driver()
 
-        wb_url = 'https://www.wildberries.ru'
+        wb_url = 'https://www.wildberries.ru/catalog/153211620/detail.aspx'
         driver.get(url=wb_url)
         driver.add_cookie({
             'name': '__spp',
             'value': '',
             'domain': 'wildberries.ru'
         })
-
         driver.add_cookie({
             'name': 'WILDAUTHNEW_V3',
             'value': settings.WILDAUTHNEW_V3,
             'domain': 'wildberries.ru'
         })
-        await asyncio.sleep(1)
+
+        await asyncio.sleep(2)
         for url, path_name in url_path_names:
             driver.get(url=url)
             await asyncio.sleep(4.2)

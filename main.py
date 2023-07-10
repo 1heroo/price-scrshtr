@@ -7,17 +7,16 @@ from source.core.routes import router as main_router
 import uvicorn
 
 from source.db.db import async_engine
-from source.price_management.selenium_utils import SeleniumUtils
-from source.redis_cache.redis_client import redis_client
-# from source.price_management.selenium_utils import SeleniumUtils
-from source.supplier_management.admin import ProductAdmin, SupplierAdmin, ReportAdmin
+from source.screen_management.selenium_utils import SeleniumUtils
+from source.supplier_management.admin import ProductAdmin, ScreenshotAdmin
 
-app = FastAPI(title='Контроль РРЦ(Ресанта, Вихрь, Hunter)')
+app = FastAPI(title='Скрин трекинг цен')
 
 app.include_router(router=main_router)
 
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 @app.get('/test')
 async def test():
@@ -29,9 +28,9 @@ async def test():
 
 admin = Admin(app=app, engine=async_engine)
 
-admin.add_view(SupplierAdmin)
+
 admin.add_view(ProductAdmin)
-admin.add_view(ReportAdmin)
+admin.add_view(ScreenshotAdmin)
 
 
 if __name__ == '__main__':
