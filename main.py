@@ -21,7 +21,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get('/test')
 async def test():
     utils = SeleniumUtils()
-    url = [('https://www.wildberries.ru/catalog/153211620/detail.aspx', 's.png')]
+    url = [('https://www.wildberries.ru/catalog/153211620/detail.aspx', f's{i}.png') for i in range(1, 2)]
     await utils.make_screenshot(url_path_names=url)
     await utils.compress_images(url_path_names=url)
 

@@ -11,12 +11,13 @@ class SeleniumUtils(BaseUtils):
 
     def init_driver(self) -> webdriver.Chrome:
         options = webdriver.ChromeOptions()
-        options.add_argument("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        # options.add_argument("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+        options.add_argument("Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
         options.add_argument("accept=*/*")
         options.add_argument("--window-size=1920,1080")
 
-        # driver = webdriver.Chrome(options=options)
-        driver = webdriver.Remote(command_executor=settings.SELENIUM_HOST + '/wd/hub', options=options)
+        driver = webdriver.Chrome(options=options)
+        # driver = webdriver.Remote(command_executor=settings.SELENIUM_HOST + '/wd/hub', options=options)
 
         return driver
 
@@ -41,11 +42,17 @@ class SeleniumUtils(BaseUtils):
             'value': settings.WILDAUTHNEW_V3,
             'domain': 'wildberries.ru'
         })
+        tabs_paths = []
+        for index, pair in enumerate(url_path_names, start=1):
+            tab_name = f'tab{index}'
+            url, path_name = pair
+            driver.execute_script(f"window.open('about:blank', '{tab_name}');")
+            driver.switch_to.window(tab_name)
+            driver.get(url)
+            tabs_paths.append((tab_name, path_name))
 
-        await asyncio.sleep(2)
-        for url, path_name in url_path_names:
-            driver.get(url=url)
-            await asyncio.sleep(4.2)
+        for tab, path_name in tabs_paths:
+            driver.switch_to.window(tab)
             driver.save_screenshot(path_name)
 
         driver.quit()
